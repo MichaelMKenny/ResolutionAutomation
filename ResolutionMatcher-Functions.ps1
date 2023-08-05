@@ -51,7 +51,11 @@ function Get-HostResolution {
 
 function Assert-ResolutionChange($originalRes) {
     for ($i = 0; $i -lt 12; $i++) {
-        $currentRes = Join-Overrides -resolution (Get-ClientResolution)
+        $currentRes = Join-Overrides -resolution (@{
+            Height  = $env:SUNSHINE_CLIENT_HEIGHT
+            Width   = $env:SUNSHINE_CLIENT_WIDTH
+            Refresh = $env:SUNSHINE_CLIENT_FPS
+        })
         if (($currentRes.Width -ne $originalRes.Width) -or ($currentRes.Height -ne $originalRes.Height) -or ($currentRes.Refresh -ne $originalRes.Refresh)) {
             # If the resolutions don't match, set the screen resolution to the current client's resolution
             Write-Host "The client resolution changed within the past 6 seconds, this implies the first time the resolution was changed may have been incorrect due to stale data"
@@ -178,8 +182,12 @@ function Stop-ResolutionMatcherScript() {
     }
 }
 
-function OnStreamStart() {
-    $expectedRes = Join-Overrides -resolution (Get-ClientResolution)
+function OnStreamStart($width, $height, $frequency) {
+    $expectedRes = @{
+        Height  = $height
+        Width   = $width
+        Refresh = $frequency
+    }
     Set-ScreenResolution -Width $expectedRes.Width -Height $expectedRes.Height -Freq $expectedRes.Refresh
     Assert-ResolutionChange -originalRes $expectedRes
 }
