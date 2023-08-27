@@ -112,11 +112,11 @@ function OnStreamStart($width, $height, $refresh) {
 function OnStreamEnd($hostResolution) {
 
     if (($host_resolution_override.Values | Measure-Object -Sum).Sum -gt 1000) {
-        $hostResolution = @{
-            CurrentHorizontalResolution = $host_resolution_override['Width']
-            CurrentVerticalResolution   = $host_resolution_override['Height']
-            CurrentRefreshRate          = $host_resolution_override['Refresh']
-        }
+        # $hostResolution = @{
+        #     CurrentHorizontalResolution = $host_resolution_override['Width']
+        #     CurrentVerticalResolution   = $host_resolution_override['Height']
+        #     CurrentRefreshRate          = $host_resolution_override['Refresh']
+        # }
     }
     # Set-ScreenResolution -Width $hostResolution.CurrentHorizontalResolution -Height $hostResolution.CurrentVerticalResolution -Freq $hostResolution.CurrentRefreshRate   
 }
