@@ -105,6 +105,7 @@ function Stop-ResolutionMatcherScript() {
 
 function OnStreamStart($width, $height, $refresh) {
     $expectedRes = Join-Overrides -width $width -height $height -refresh $refresh
+    Start-Sleep -Seconds 2
     Set-ScreenResolution -Width $expectedRes.Width -Height $expectedRes.Height -Freq $expectedRes.Refresh
 }
 
