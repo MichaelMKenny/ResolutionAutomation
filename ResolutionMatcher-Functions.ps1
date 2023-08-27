@@ -21,7 +21,8 @@ Function Set-ScreenResolution($width, $height, $frequency) {
     while ([DisplaySettings]::EnumDisplaySettings([NullString]::Value, $modeNum, [ref]$devMode)) {
         $frequencyDiff = [Math]::Abs($devMode.dmDisplayFrequency - $frequency)
         if ($devMode.dmPelsWidth -eq $width -and $devMode.dmPelsHeight -eq $height -and $frequencyDiff -le $tolerance) {
-            $result = [DisplaySettings]::ChangeDisplaySettings([ref]$devMode, 0)
+            $flags = 0x00000001 # Value of CDS_UPDATEREGISTRY
+            $result = [DisplaySettings]::ChangeDisplaySettings([ref]$devMode, $flags)
             if ($result -eq 0) {
                 Write-Host "Resolution changed successfully."
             }
