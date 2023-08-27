@@ -117,7 +117,7 @@ function OnStreamEnd($hostResolution) {
             CurrentRefreshRate          = $host_resolution_override['Refresh']
         }
     }
-    Set-ScreenResolution -Width $hostResolution.CurrentHorizontalResolution -Height $hostResolution.CurrentVerticalResolution -Freq $hostResolution.CurrentRefreshRate   
+    # Set-ScreenResolution -Width $hostResolution.CurrentHorizontalResolution -Height $hostResolution.CurrentVerticalResolution -Freq $hostResolution.CurrentRefreshRate   
 }
 
     
