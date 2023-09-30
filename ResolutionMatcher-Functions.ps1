@@ -106,20 +106,25 @@ function Stop-ResolutionMatcherScript() {
 
 function OnStreamStart($width, $height, $refresh) {
     $expectedRes = Join-Overrides -width $width -height $height -refresh $refresh
-    Start-Sleep -Seconds 4
+    if ($env:SUNSHINE_CLIENT_HDR -eq "true") {
+        Start-Sleep -Seconds 6
+    }
     Set-ScreenResolution -Width $expectedRes.Width -Height $expectedRes.Height -Freq $expectedRes.Refresh
 }
 
 function OnStreamEnd($hostResolution) {
 
     if (($host_resolution_override.Values | Measure-Object -Sum).Sum -gt 1000) {
-        # $hostResolution = @{
-        #     CurrentHorizontalResolution = $host_resolution_override['Width']
-        #     CurrentVerticalResolution   = $host_resolution_override['Height']
-        #     CurrentRefreshRate          = $host_resolution_override['Refresh']
-        # }
+        $hostResolution = @{
+            CurrentHorizontalResolution = $host_resolution_override['Width']
+            CurrentVerticalResolution   = $host_resolution_override['Height']
+            CurrentRefreshRate          = $host_resolution_override['Refresh']
+        }
     }
-    # Set-ScreenResolution -Width $hostResolution.CurrentHorizontalResolution -Height $hostResolution.CurrentVerticalResolution -Freq $hostResolution.CurrentRefreshRate   
+
+    if ($env:SUNSHINE_CLIENT_HDR -eq "false") {
+        Set-ScreenResolution -Width $hostResolution.CurrentHorizontalResolution -Height $hostResolution.CurrentVerticalResolution -Freq $hostResolution.CurrentRefreshRate   
+    }
 }
 
     
